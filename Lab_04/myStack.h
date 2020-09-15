@@ -67,11 +67,18 @@ public:
       //Postcondition: The array (list) holding the stack 
       //               elements is deleted.
 
+    bool operator==(const stackType<Type>& otherStack) const;
+
+    void reverseStack(stackType<Type>& otherStack);
+
+    void print() const;
+
 private:
     int maxStackSize; //variable to store the maximum stack size
     int stackTop;     //variable to point to the top of the stack
     Type *list;       //pointer to the array that holds the
                       //stack elements
+                    
 
     void copyStack(const stackType<Type>& otherStack); 
       //Function to make a copy of otherStack.
@@ -189,6 +196,44 @@ const stackType<Type>& stackType<Type>::operator=
         copyStack(otherStack);
 
     return *this; 
-} //end operator=         
+} //end operator=   
+
+// todo: defintion of equivalance operator overload to go here 
+template <class Type>
+bool stackType<Type>::operator==(const stackType<Type>& otherStack) const {
+  bool equiv = true;
+  if (this->stackTop != otherStack.stackTop) {
+    equiv = false;
+  } else {
+    for (int i = 0; i < this->stackTop; i++) {
+      if(this->list[i] != otherStack.list[i]) {
+        equiv = false;
+        break;
+      }
+    }
+  }
+  return equiv;
+}
+
+// todo: defintion of reverseStack to go here
+template <class Type>
+void stackType<Type>::reverseStack(stackType<Type>& otherStack) {
+  otherStack.~stackType();				   
+  otherStack.maxStackSize = this->maxStackSize;		   
+  otherStack.stackTop = 0;			   
+	  
+  otherStack.list = new Type[maxStackSize];		   			   
+
+  for (int j = this->stackTop-1; j >= 0; j--) {
+    otherStack.push(this->list[j]);
+  }
+}
+
+template <class Type>
+void stackType<Type>::print() const {
+  for (int j = 0; j < stackTop; j++)  {
+    cout << list[j] << endl;
+  }
+}
 
 #endif
